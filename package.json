@@ -1,0 +1,13 @@
+{
+  "name": "devto-content",
+  "private": true,
+  "version": "1.0.0",
+  "description": "GitHub -> DEV Community (dev.to) auto-publish pipeline (Forem API)",
+  "type": "module",
+  "scripts": {
+    "publish": "node scripts/publish.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}
