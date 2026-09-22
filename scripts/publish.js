@@ -96,8 +96,10 @@ async function main() {
       const tweetText = frontmatter.x_post
         ? `${frontmatter.x_post}\n${articleUrl}`
         : `新しい記事を公開しました\n${frontmatter.title}\n${articleUrl}`;
-      await postToX(tweetText);
-      frontmatter.posted_to_x = true;
+      const tweetResult = await postToX(tweetText);
+      if (tweetResult) {
+        frontmatter.posted_to_x = true;
+      }
     }
 
     fs.writeFileSync(filePath, serialize(frontmatter, body));

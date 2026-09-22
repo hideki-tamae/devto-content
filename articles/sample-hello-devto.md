@@ -11,7 +11,7 @@ series: null
 cover_image: null
 id: 4712003
 url: https://dev.to/hidekitamae/hello-dev-community-from-a-github-driven-publish-loop-5he3-temp-slug-1598572
-posted_to_x: true
+posted_to_x: false
 ---
 
 This is a placeholder article to verify the GitHub -> dev.to publish loop.
