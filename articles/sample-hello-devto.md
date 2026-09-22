@@ -1,6 +1,6 @@
 ---
 title: Hello DEV Community — from a GitHub-driven publish loop
-published: false
+published: true
 tags:
   - ai
   - agenticai
