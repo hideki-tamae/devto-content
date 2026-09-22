@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import yaml from "js-yaml";
+import { postToX } from "./post-to-x.js";
 
 const API_KEY = process.env.DEVTO_API_KEY;
 const ARTICLES_DIR = path.resolve("articles");
@@ -76,6 +77,8 @@ async function main() {
       },
     };
 
+    let articleUrl = frontmatter.url;
+
     if (frontmatter.id) {
       console.log(`Updating ${file} (id=${frontmatter.id})`);
       await callForem("PUT", `${API_BASE}/${frontmatter.id}`, payload);
@@ -84,10 +87,21 @@ async function main() {
       const result = await callForem("POST", API_BASE, payload);
       frontmatter.id = result.id;
       frontmatter.url = result.url;
-      fs.writeFileSync(filePath, serialize(frontmatter, body));
-      changed = true;
+      articleUrl = result.url;
       console.log(`  -> published at ${result.url}`);
     }
+
+    const isPublished = payload.article.published;
+    if (isPublished && !frontmatter.posted_to_x && articleUrl) {
+      const tweetText = frontmatter.x_post
+        ? `${frontmatter.x_post}\n${articleUrl}`
+        : `新しい記事を公開しました\n${frontmatter.title}\n${articleUrl}`;
+      await postToX(tweetText);
+      frontmatter.posted_to_x = true;
+    }
+
+    fs.writeFileSync(filePath, serialize(frontmatter, body));
+    changed = true;
   }
 
   if (changed) {
